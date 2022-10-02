@@ -1,0 +1,30 @@
+{
+  "name": "qrllib",
+  "version": "__QRLLIB_VERSION__",
+  "description": "QRL Core Library",
+  "scripts": {
+    "test": "cd tests/js && node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theQRL/qrllib.git"
+  },
+  "keywords": [
+    "xmss",
+    "qrl"
+  ],
+  "files": [
+    "build/web-libjsqrl.js",
+    "build/web-libjsqrl.wasm",
+    "build/libjsqrl.js"
+  ],
+  "engines": {
+    "node": ">=4.2.4"
+  },
+  "author": "QRL contributors <info@theqrl.org> (https://theqrl.org)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theQRL/qrllib/issues"
+  },
+  "homepage": "https://github.com/theQRL/qrllib#readme"
+}
