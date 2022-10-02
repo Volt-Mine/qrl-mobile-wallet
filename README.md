@@ -3,7 +3,7 @@
 Flutter implementation of qrl wallet for android and IOS
 
 
-![Screenshot](docs/QRL Mobile Wallet.png)  
+![Screenshot](docs/qrl-mobile-wallet.png)  
 
 
 ## Resources
