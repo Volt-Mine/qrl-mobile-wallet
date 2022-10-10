@@ -42,6 +42,16 @@ class QrlMobileWalletApp extends StatelessWidget {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     _secureApplicationController.secure();
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('zh', ''),
+      ],
       title: 'QRL Mobile Wallet',
       theme: ThemeData(
         canvasColor: CustomColors.qrlDarkBlueMaterial,
