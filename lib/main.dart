@@ -10,6 +10,8 @@ import 'package:mobile_wallet/ui/main_page.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:secure_application/secure_application.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 int? _walletCount;
 
