@@ -1,6 +1,7 @@
 {
   "authenticationFailed": "Authentication failed!",
   "addWallet": "添加钱包",
+  "amount": "amount",
   "balance": "平衡",
   "checkingDevice": "Checking device...",
   "confirm": "确认交易",
@@ -16,6 +17,7 @@
   "deviceLogin": "使用设备登录",
   "done": "DONE",
   "deviatingDefault": "偏离默认值由您自担风险",
+  "errorSendTransaction": "Error during send transaction:",
   "errorWalletCreation": "Error during creation of wallet:",
   "fee": "费用",
   "fromAddress": "从地址",
@@ -62,6 +64,7 @@
   "sent": "发送",
   "sendAmount": "发送金额",
   "sendingToWalletAddress": "发送到钱包地址",
+  "sendingTransaction": "Sending Transaction",
   "settings": "设置",
   "showKeys": "Show keys",
   "supportRequest": "Support request",

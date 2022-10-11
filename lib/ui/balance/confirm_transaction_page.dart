@@ -13,6 +13,7 @@ import 'package:mobile_wallet/ui/main_page.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:mobile_wallet/ui/util/string_util.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConfirmTransactionPage extends StatefulWidget {
   final Wallet _wallet;
@@ -39,28 +40,27 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Send",
-                      style: TextStyle(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(AppLocalizations.of(context)!.send,
+                      style: const TextStyle(
                         color: CustomColors.qrlLightBlueColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       )),
                 ),
               ),
-              const Center(
+              Center(
                   child: Padding(
-                padding: EdgeInsets.only(bottom: 48),
-                child: Text("Confirm transaction"),
+                padding: const EdgeInsets.only(bottom: 48),
+                child: Text(AppLocalizations.of(context)!.confirmTransaction,)
               )),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 8),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
                 child: Center(
-                    child: Text(
-                  "Amount",
-                  style: TextStyle(
+                    child: Text(AppLocalizations.of(context)!.amount,
+                  style: const TextStyle(
                     color: CustomColors.qrlYellowColor,
                   ),
                 )),
@@ -72,12 +72,11 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
                   "${StringUtil.formatAmount(widget._amount)} QRL",
                 )),
               ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 8),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
                 child: Center(
-                    child: Text(
-                  "Sending to wallet address",
-                  style: TextStyle(
+                    child: Text(AppLocalizations.of(context)!.sendingToWalletAddress,
+                  style: const TextStyle(
                     color: CustomColors.qrlYellowColor,
                   ),
                 )),
@@ -101,7 +100,7 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
                         () {
                           _onPressConfirmTransaction();
                         },
-                        text: "CONFIRM",
+                        text: AppLocalizations.of(context)!.confirm,
                         baseColor: CustomColors.qrlLightBlueColor,
                       ),
                     ),
@@ -115,7 +114,7 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
     try {
       if (await getIt<AuthenticationService>().authenticate()) {
         Wakelock.enable();
-        Dialogs.showLoadingDialog(context, "Sending transaction...");
+        Dialogs.showLoadingDialog(context, AppLocalizations.of(context)!.sendingTransaction);
         WalletService walletService = getIt<WalletService>();
         await walletService.sendTransaction(
             widget._wallet.walletNumber,
@@ -133,7 +132,7 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
           });
         }
       } else {
-        SnackBars.showSnackBar(context, "Authentication failed!");
+        SnackBars.showSnackBar(context, AppLocalizations.of(context)!.authenticationFailed);
       }
     } on Exception catch (e, stacktrace) {
       var errorMessage = e.toString();
@@ -141,7 +140,7 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
       if (mounted) {
         Dialogs.hideLoadingDialog(context);
         SnackBars.showSnackBar(
-            context, "Error during send transaction: $errorMessage");
+            context, "${AppLocalizations.of(context)!.errorSendTransaction} $errorMessage");
       }
     } finally {
       Wakelock.disable();
