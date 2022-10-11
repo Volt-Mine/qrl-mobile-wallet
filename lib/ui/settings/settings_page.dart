@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile_wallet/main.dart';
+import 'package:mobile_wallet/model/app_language.dart';
 import 'package:mobile_wallet/model/app_settings.dart';
 import 'package:mobile_wallet/service/authentication_service.dart';
 import 'package:mobile_wallet/service/service_locator.dart';
@@ -21,6 +23,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool _isSwitched = false;
+  AppLanguage? _selectedAppLanguage;
   final TextEditingController _nodeUrlController = TextEditingController();
   final TextEditingController _portController = TextEditingController();
   AppSettings? _currentAppSettings;
@@ -63,6 +66,56 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: const Text('Use device login'),
                     onChanged: (value) => _toggleSwitch(value),
                     value: _isSwitched),
+              ),
+              Center(
+                child: SizedBox(
+                  width: 512,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8, bottom: 8, left: 32, right: 32),
+                    child: InputDecorator(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                                width: 1, color: CustomColors.qrlYellowColor)),
+                        contentPadding: const EdgeInsets.only(
+                            left: 12, right: 12, top: 4, bottom: 4),
+                        labelText: 'Language',
+                        labelStyle:
+                            const TextStyle(color: CustomColors.qrlYellowColor),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        border: const OutlineInputBorder(),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<AppLanguage>(
+                          isExpanded: true,
+                          value: _selectedAppLanguage ?? AppLanguage.en,
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: CustomColors.qrlYellowColor,
+                          ),
+                          underline: null,
+                          onChanged: (AppLanguage? value) {
+                            if (value != null) {
+                              setState(() {
+                                _selectedAppLanguage = value;
+                              });
+                            }
+                          },
+                          items: AppLanguage.values
+                              .map<DropdownMenuItem<AppLanguage>>(
+                                  (AppLanguage value) {
+                            return DropdownMenuItem<AppLanguage>(
+                              value: value,
+                              child: Text(value.displayName),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -154,6 +207,7 @@ class _SettingsPageState extends State<SettingsPage> {
         _isSwitched = appSettings.useDeviceLogin;
         _nodeUrlController.text = appSettings.nodeUrl;
         _portController.text = appSettings.port.toString();
+        _selectedAppLanguage = appSettings.appLanguage;
       });
     }
   }
@@ -200,6 +254,9 @@ class _SettingsPageState extends State<SettingsPage> {
           _currentAppSettings!.nodeUrl != _nodeUrlController.text) {
         return true;
       }
+      if (_selectedAppLanguage != _currentAppSettings!.appLanguage) {
+        return true;
+      }
     }
     return false;
   }
@@ -221,10 +278,12 @@ class _SettingsPageState extends State<SettingsPage> {
       _currentAppSettings!.useDeviceLogin = _isSwitched;
       _currentAppSettings!.nodeUrl = _nodeUrlController.text;
       _currentAppSettings!.port = int.parse(_portController.text);
+      _currentAppSettings!.appLanguage = _selectedAppLanguage;
       await settingsService.saveAppSettings(_currentAppSettings!);
       if (mounted) {
         Dialogs.hideLoadingDialog(context);
         SnackBars.showSnackBar(context, "Settings saved");
+        QrlMobileWalletApp.of(context)!.resetState();
       }
     } finally {
       Wakelock.disable();

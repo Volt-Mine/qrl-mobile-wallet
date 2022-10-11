@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_wallet/ui/component/qrl_button.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 
@@ -40,7 +41,7 @@ class Dialogs {
           return AlertDialog(
             backgroundColor: CustomColors.qrlDarkBlueColor,
             title: Text(
-              header ?? "Confirm",
+              header ?? AppLocalizations.of(context)!.confirm,
               style: const TextStyle(
                 color: CustomColors.qrlLightBlueColor,
                 fontWeight: FontWeight.bold,
@@ -58,7 +59,7 @@ class Dialogs {
                     Navigator.of(context).pop();
                     onConfirm.call();
                   },
-                  text: "Yes",
+                  text: AppLocalizations.of(context)!.yes,
                   baseColor: CustomColors.qrlLightBlueColor,
                 ),
               ),
@@ -68,7 +69,7 @@ class Dialogs {
                   () {
                     Navigator.of(context).pop();
                   },
-                  text: "No",
+                  text: AppLocalizations.of(context)!.no,
                   baseColor: CustomColors.qrlLightBlueColor,
                 ),
               )

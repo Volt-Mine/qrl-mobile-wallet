@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile_wallet/model/app_language.dart';
 import 'package:mobile_wallet/model/app_settings.dart';
 import 'package:mobile_wallet/service/settings_service.dart';
 import 'package:mobile_wallet/service/shared_preference_service.dart';
@@ -27,8 +29,11 @@ void main() {
   });
 
   test("test update values", () async {
-    await settingsService!
-        .saveAppSettings(AppSettings(false, "test.update.node.com", 54321));
+    await settingsService!.saveAppSettings(AppSettings(
+        false,
+        "test.update.node.com",
+        54321,
+        AppLanguage.en));
     await settingsService!.updateFeeSetting(500);
     AppSettings appSettings = await settingsService!.getAppSettings();
     expect(appSettings.useDeviceLogin, false);

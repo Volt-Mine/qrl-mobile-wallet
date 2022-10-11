@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_wallet/ui/addwallet/create_wallet_page.dart';
 import 'package:mobile_wallet/ui/addwallet/open_wallet_page.dart';
 import 'package:mobile_wallet/ui/component/qrl_app_bar.dart';
 import 'package:mobile_wallet/ui/component/qrl_button.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddWalletPage extends StatelessWidget {
   const AddWalletPage({Key? key}) : super(key: key);
@@ -29,32 +29,32 @@ class AddWalletPage extends StatelessWidget {
                 'assets/images/qrl-tree.png',
                 height: 240,
               ),
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Text("Welcome to",
-                      style: TextStyle(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(AppLocalizations.of(context)!.welcomeTo,
+                      style: const TextStyle(
                         color: CustomColors.qrlYellowColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       )),
                 ),
               ),
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Text("THE QUANTUM RESISTANT LEDGER",
-                      style: TextStyle(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(AppLocalizations.of(context)!.ledger,
+                      style: const TextStyle(
                         color: CustomColors.qrlYellowColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       )),
                 ),
               ),
-              const Center(
+              Center(
                   child: Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: Text("We are happy to have you on board!"),
+                padding: const EdgeInsets.only(top: 30),
+                child: Text(AppLocalizations.of(context)!.onBoard),
               )),
               Center(
                 child: Padding(

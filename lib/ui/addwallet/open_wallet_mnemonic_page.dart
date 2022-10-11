@@ -12,6 +12,7 @@ import 'package:mobile_wallet/ui/component/qrl_textfield.dart';
 import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OpenWalletMnemonicPage extends StatefulWidget {
   const OpenWalletMnemonicPage({Key? key}) : super(key: key);
@@ -39,21 +40,21 @@ class _OpenWalletMnemonicPageState extends State<OpenWalletMnemonicPage> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Center(
+                     Center(
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Wallet Setup",
-                            style: TextStyle(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(AppLocalizations.of(context)!.walletSetup,
+                            style: const TextStyle(
                               color: CustomColors.qrlLightBlueColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             )),
                       ),
                     ),
-                    const Center(
+                     Center(
                         child: Padding(
-                      padding: EdgeInsets.only(bottom: 32),
-                      child: Text("Open with mnemonic"),
+                      padding: const EdgeInsets.only(bottom: 32),
+                      child: Text(AppLocalizations.of(context)!.openWithMnemonics),
                     )),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -61,7 +62,7 @@ class _OpenWalletMnemonicPageState extends State<OpenWalletMnemonicPage> {
                       child: QrlTextField(
                         _nameController,
                         (value) => setState(() {}),
-                        text: "Wallet name",
+                        text: AppLocalizations.of(context)!.walletName,
                         autoFocus: true,
                       ),
                     ),
@@ -71,7 +72,7 @@ class _OpenWalletMnemonicPageState extends State<OpenWalletMnemonicPage> {
                       child: QrlTextField(
                         _mnemonicController,
                         (value) => setState(() {}),
-                        text: "Mnemonic",
+                        text: AppLocalizations.of(context)!.mnemonic,
                         keyboardType: TextInputType.multiline,
                         minLines: 1,
                         maxLines: 10,
@@ -89,7 +90,7 @@ class _OpenWalletMnemonicPageState extends State<OpenWalletMnemonicPage> {
                                       _mnemonicController.text.isNotEmpty
                                   ? () => _onPressedConfirm()
                                   : null,
-                              text: "CONFIRM",
+                              text: AppLocalizations.of(context)!.warning,
                               baseColor: CustomColors.qrlLightBlueColor,
                             ),
                           ),
@@ -107,7 +108,7 @@ class _OpenWalletMnemonicPageState extends State<OpenWalletMnemonicPage> {
   void _onPressedConfirm() async {
     try {
       Wakelock.enable();
-      Dialogs.showLoadingDialog(context, "Creating wallet...");
+      Dialogs.showLoadingDialog(context, AppLocalizations.of(context)!.creatingWallet);
       WalletService walletService = getIt<WalletService>();
       Wallet wallet = await walletService.createWallet(_nameController.text,
           mnemonic: _mnemonicController.text);
@@ -124,7 +125,7 @@ class _OpenWalletMnemonicPageState extends State<OpenWalletMnemonicPage> {
       if (mounted) {
         Dialogs.hideLoadingDialog(context);
         SnackBars.showSnackBar(
-            context, "Error during creation of wallet: $errorMessage");
+            context, "${AppLocalizations.of(context)!.errorWalletCreation} $errorMessage");
       }
     } finally {
       Wakelock.disable();
