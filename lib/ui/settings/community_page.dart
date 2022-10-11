@@ -3,27 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_wallet/ui/component/qrl_app_bar.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:mobile_wallet/ui/util/util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommunityPage extends StatelessWidget {
   const CommunityPage({Key? key}) : super(key: key);
-
-  /**
-      IconAndUrl(const FaIcon(FontAwesomeIcons.github).icon!,
-      "https://github.com/theQRL/QRL", "lik me kut"),
-      IconAndUrl(
-      Icons.discord, "https://discord.com/invite/fVrEKDS6bh", "lik me kut"),
-      IconAndUrl(const FaIcon(FontAwesomeIcons.youtube).icon!,
-      "https://www.youtube.com/c/QRLedger?app=mobile", "lik me kut"),
-      IconAndUrl(Icons.reddit, "https://www.reddit.com/r/QRL/", "lik me kut"),
-      IconAndUrl(Icons.telegram, "https://t.me/QRLedgerOfficial", "lik me kut"),
-      IconAndUrl(const FaIcon(FontAwesomeIcons.twitter).icon!,
-      IconAndUrl(const FaIcon(FontAwesomeIcons.linkedin).icon!,
-      "https://www.linkedin.com/company/the-quantum-resistant-ledger/",
-      "lik me kut"),
-      IconAndUrl(
-      Icons.facebook, "https://www.facebook.com/theqrl/", "lik me kut"),
-
-      ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +23,23 @@ class CommunityPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Center(
+                  Center(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Community",
-                          style: TextStyle(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(AppLocalizations.of(context)!.community,
+                          style: const TextStyle(
                             color: CustomColors.qrlLightBlueColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           )),
                     ),
                   ),
-                  const Center(
+                  Center(
                     child: Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24, top: 48),
+                      padding:
+                          const EdgeInsets.only(left: 24, right: 24, top: 48),
                       child: Text(
-                        "Join our mailing list, contact the team or join our vibrant and friendly community of users, developers and enthusiast on one of our channels",
+                        AppLocalizations.of(context)!.joinMailing,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -87,10 +71,11 @@ class CommunityPage extends StatelessWidget {
                               child: const Text("www.qrl.foundation"),
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 36),
-                            child: Text("General enquiries",
-                                style: TextStyle(
+                          Padding(
+                            padding: const EdgeInsets.only(top: 36),
+                            child: Text(
+                                AppLocalizations.of(context)!.generalEnquiries,
+                                style: const TextStyle(
                                   color: CustomColors.qrlYellowColor,
                                   fontWeight: FontWeight.bold,
                                 )),
@@ -105,10 +90,11 @@ class CommunityPage extends StatelessWidget {
                               child: const Text("info@theqrl.org"),
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 36),
-                            child: Text("Support request",
-                                style: TextStyle(
+                          Padding(
+                            padding: const EdgeInsets.only(top: 36),
+                            child: Text(
+                                AppLocalizations.of(context)!.supportRequest,
+                                style: const TextStyle(
                                   color: CustomColors.qrlYellowColor,
                                   fontWeight: FontWeight.bold,
                                 )),
@@ -124,10 +110,11 @@ class CommunityPage extends StatelessWidget {
                               child: const Text("support@theqrl.org"),
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 36),
-                            child: Text("Press enquiries",
-                                style: TextStyle(
+                          Padding(
+                            padding: const EdgeInsets.only(top: 36),
+                            child: Text(
+                                AppLocalizations.of(context)!.pressEnquiries,
+                                style: const TextStyle(
                                   color: CustomColors.qrlYellowColor,
                                   fontWeight: FontWeight.bold,
                                 )),
@@ -189,12 +176,13 @@ class CommunityPage extends StatelessWidget {
                         ),
                         IconButton(
                           icon: Icon(
-                            const FaIcon(FontAwesomeIcons.discord).icon!),
+                              const FaIcon(FontAwesomeIcons.discord).icon!),
                           tooltip: "Discord",
                           color: CustomColors.qrlLightBlueColor,
                           iconSize: 32,
                           onPressed: () async {
-                            Uri url = Uri.parse("https://discord.com/invite/fVrEKDS6bh");
+                            Uri url = Uri.parse(
+                                "https://discord.com/invite/fVrEKDS6bh");
                             await Util.launchInBrowser(url);
                           },
                         ),

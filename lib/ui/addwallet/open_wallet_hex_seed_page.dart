@@ -13,6 +13,7 @@ import 'package:mobile_wallet/ui/component/scan_qr_page.dart';
 import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OpenWalletHexSeedPage extends StatefulWidget {
   const OpenWalletHexSeedPage({Key? key}) : super(key: key);
@@ -41,21 +42,22 @@ class _OpenWalletHexSeedPageState extends State<OpenWalletHexSeedPage> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Center(
+                    Center(
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Wallet Setup",
-                            style: TextStyle(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(AppLocalizations.of(context)!.walletSetup,
+                            style: const TextStyle(
                               color: CustomColors.qrlLightBlueColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             )),
                       ),
                     ),
-                    const Center(
+                    Center(
                         child: Padding(
-                      padding: EdgeInsets.only(bottom: 32),
-                      child: Text("Open with hexseed"),
+                      padding: const EdgeInsets.only(bottom: 32),
+                      child:
+                          Text(AppLocalizations.of(context)!.openWithHexseed),
                     )),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -63,7 +65,7 @@ class _OpenWalletHexSeedPageState extends State<OpenWalletHexSeedPage> {
                       child: QrlTextField(
                         _nameController,
                         (value) => setState(() {}),
-                        text: "Wallet name",
+                        text: AppLocalizations.of(context)!.walletName,
                         autoFocus: true,
                       ),
                     ),
@@ -73,14 +75,14 @@ class _OpenWalletHexSeedPageState extends State<OpenWalletHexSeedPage> {
                       child: QrlTextField(
                         _hexSeedController,
                         (value) => setState(() {}),
-                        text: "Hexseed",
+                        text: AppLocalizations.of(context)!.hexseed,
                         focusNode: _focusNode,
                         keyboardType: TextInputType.multiline,
                         minLines: 1,
                         maxLines: 5,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.qr_code),
-                          tooltip: "Scan hexseed",
+                          tooltip: AppLocalizations.of(context)!.scanHexseed,
                           color: CustomColors.qrlYellowColor,
                           onPressed: () {
                             if (!_focusNode.hasFocus) {
@@ -103,7 +105,7 @@ class _OpenWalletHexSeedPageState extends State<OpenWalletHexSeedPage> {
                                       _hexSeedController.text.isNotEmpty
                                   ? () => _onPressedConfirm()
                                   : null,
-                              text: "CONFIRM",
+                              text: AppLocalizations.of(context)!.confirm,
                               baseColor: CustomColors.qrlLightBlueColor,
                             ),
                           ),
@@ -133,7 +135,7 @@ class _OpenWalletHexSeedPageState extends State<OpenWalletHexSeedPage> {
   void _onPressedConfirm() async {
     try {
       Wakelock.enable();
-      Dialogs.showLoadingDialog(context, "Creating wallet...");
+      Dialogs.showLoadingDialog(context, AppLocalizations.of(context)!.creatingWallet);
       WalletService walletService = getIt<WalletService>();
       Wallet wallet = await walletService.createWallet(_nameController.text,
           hexSeed: _hexSeedController.text);
@@ -150,7 +152,7 @@ class _OpenWalletHexSeedPageState extends State<OpenWalletHexSeedPage> {
       if (mounted) {
         Dialogs.hideLoadingDialog(context);
         SnackBars.showSnackBar(
-            context, "Error during creation of wallet: $errorMessage");
+            context, "${AppLocalizations.of(context)!.errorWalletCreation} $errorMessage");
       }
     } finally {
       Wakelock.disable();

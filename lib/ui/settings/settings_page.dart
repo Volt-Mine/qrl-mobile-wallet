@@ -13,6 +13,7 @@ import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/settings/community_page.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -47,11 +48,11 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Settings",
-                      style: TextStyle(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(AppLocalizations.of(context)!.settings,
+                      style: const TextStyle(
                         color: CustomColors.qrlLightBlueColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -63,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     top: 8, bottom: 8, left: 16, right: 8),
                 child: SwitchListTile(
                     activeColor: CustomColors.qrlLightBlueColor,
-                    title: const Text('Use device login'),
+                    title: Text(AppLocalizations.of(context)!.useDeviceLogin),
                     onChanged: (value) => _toggleSwitch(value),
                     value: _isSwitched),
               ),
@@ -81,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 width: 1, color: CustomColors.qrlYellowColor)),
                         contentPadding: const EdgeInsets.only(
                             left: 12, right: 12, top: 4, bottom: 4),
-                        labelText: 'Language',
+                        labelText: AppLocalizations.of(context)!.language,
                         labelStyle:
                             const TextStyle(color: CustomColors.qrlYellowColor),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -123,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: QrlTextField(
                   _nodeUrlController,
                   (value) => setState(() {}),
-                  text: "Node URL",
+                  text: AppLocalizations.of(context)!.nodeUrl,
                 ),
               ),
               Padding(
@@ -132,29 +133,29 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: QrlTextField(
                   _portController,
                   (value) => setState(() {}),
-                  text: "Port",
+                  text: AppLocalizations.of(context)!.port,
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ],
                 ),
               ),
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Warning",
-                      style: TextStyle(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(AppLocalizations.of(context)!.warning,
+                      style: const TextStyle(
                         color: CustomColors.qrlLightBlueColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       )),
                 ),
               ),
-              const Center(
+              Center(
                   child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Text(
-                  "Deviating from the default is at your own risk",
+                  AppLocalizations.of(context)!.deviatingDefault,
                   textAlign: TextAlign.center,
                 ),
               )),
@@ -168,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       width: 256,
                       child: QrlButton(
                         () => _onPressedJoinOurCommunity(),
-                        text: "JOIN OUR COMMUNITY",
+                        text: AppLocalizations.of(context)!.join,
                         baseColor: CustomColors.qrlLightBlueColor,
                       ),
                     ),
@@ -184,7 +185,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       width: 256,
                       child: QrlButton(
                         _hasChanges() ? () => _onPressedConfirm() : null,
-                        text: "CONFIRM",
+                        text: AppLocalizations.of(context)!.confirm,
                         baseColor: CustomColors.qrlLightBlueColor,
                       ),
                     ),
@@ -214,7 +215,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _toggleSwitch(bool value) async {
     if (value) {
-      Dialogs.showLoadingDialog(context, "Checking device...");
+      Dialogs.showLoadingDialog(
+          context, AppLocalizations.of(context)!.checkingDevice);
       if (await getIt<AuthenticationService>().hasDeviceAuthentication()) {
         if (mounted) {
           setState(() {
@@ -223,7 +225,7 @@ class _SettingsPageState extends State<SettingsPage> {
         }
       } else {
         SnackBars.showSnackBar(
-            context, "No authentication method found on device!");
+            context, AppLocalizations.of(context)!.noAuthenticationFound);
       }
       if (mounted) {
         Dialogs.hideLoadingDialog(context);
@@ -236,7 +238,8 @@ class _SettingsPageState extends State<SettingsPage> {
           });
         }
       } else {
-        SnackBars.showSnackBar(context, "Authentication failed!");
+        SnackBars.showSnackBar(
+            context, AppLocalizations.of(context)!.authenticationFailed);
       }
     }
   }
@@ -273,7 +276,8 @@ class _SettingsPageState extends State<SettingsPage> {
   _onPressedConfirm() async {
     try {
       Wakelock.enable();
-      Dialogs.showLoadingDialog(context, "Saving settings...");
+      Dialogs.showLoadingDialog(
+          context, AppLocalizations.of(context)!.savingSettings);
       SettingsService settingsService = getIt<SettingsService>();
       _currentAppSettings!.useDeviceLogin = _isSwitched;
       _currentAppSettings!.nodeUrl = _nodeUrlController.text;
@@ -282,7 +286,8 @@ class _SettingsPageState extends State<SettingsPage> {
       await settingsService.saveAppSettings(_currentAppSettings!);
       if (mounted) {
         Dialogs.hideLoadingDialog(context);
-        SnackBars.showSnackBar(context, "Settings saved");
+        SnackBars.showSnackBar(
+            context, AppLocalizations.of(context)!.settingsSaved);
         QrlMobileWalletApp.of(context)!.resetState();
       }
     } finally {

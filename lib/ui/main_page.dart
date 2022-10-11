@@ -4,6 +4,7 @@ import 'package:mobile_wallet/ui/component/qrl_app_bar.dart';
 import 'package:mobile_wallet/ui/settings/settings_page.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:mobile_wallet/ui/wallets/wallets_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -33,18 +34,18 @@ class _MainPageState extends State<MainPage> {
       appBar: QrlAppBar(),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: 'Balance',
+            icon: const Icon(Icons.account_balance_wallet),
+            label: AppLocalizations.of(context)!.balance,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
-            label: 'Wallets',
+            icon: const Icon(Icons.wallet),
+            label: AppLocalizations.of(context)!.wallets,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: const Icon(Icons.settings),
+            label: AppLocalizations.of(context)!.settings,
           ),
         ],
         currentIndex: _selectedIndex,
