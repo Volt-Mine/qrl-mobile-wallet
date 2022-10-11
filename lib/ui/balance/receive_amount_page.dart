@@ -6,6 +6,7 @@ import 'package:mobile_wallet/ui/component/qrl_button.dart';
 import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReceiveAmountPage extends StatelessWidget {
   final Wallet _currentWallet;
@@ -20,21 +21,22 @@ class ReceiveAmountPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Receive",
-                    style: TextStyle(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(AppLocalizations.of(context)!.receive,
+                    style: const TextStyle(
                       color: CustomColors.qrlLightBlueColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     )),
               ),
             ),
-            const Center(
+            Center(
                 child: Padding(
-              padding: EdgeInsets.only(bottom: 48),
-              child: Text("Your public wallet address"),
+              padding: const EdgeInsets.only(bottom: 48),
+              child:
+                  Text(AppLocalizations.of(context)!.yourPublicWalletAddress),
             )),
             Center(
                 child: Padding(
@@ -71,11 +73,11 @@ class ReceiveAmountPage extends StatelessWidget {
                         Clipboard.setData(ClipboardData(
                                 text: "Q${_currentWallet.address}"))
                             .then((value) {
-                          SnackBars.showSnackBar(
-                              context, "Copied to Clipboard");
+                          SnackBars.showSnackBar(context,
+                              AppLocalizations.of(context)!.copiedToClipboard);
                         });
                       },
-                      text: "COPY",
+                      text: AppLocalizations.of(context)!.copy,
                       baseColor: CustomColors.qrlLightBlueColor,
                     ),
                   ),

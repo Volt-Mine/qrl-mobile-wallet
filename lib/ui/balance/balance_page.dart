@@ -18,6 +18,7 @@ import 'package:mobile_wallet/ui/component/qrl_button.dart';
 import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:mobile_wallet/ui/util/string_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BalancePage extends StatefulWidget {
   const BalancePage({Key? key}) : super(key: key);
@@ -150,14 +151,14 @@ class _BalancePageState extends State<BalancePage> {
                               ),
                             ),
                           ),
-                          const Center(
+                          Center(
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 24, right: 24, bottom: 8, top: 8),
                               child: Text(
-                                "24H Change",
+                                AppLocalizations.of(context)!.priceChange,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: CustomColors.qrlYellowColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -192,7 +193,8 @@ class _BalancePageState extends State<BalancePage> {
                                 children: [
                                   Expanded(
                                     child: Column(children: [
-                                      const Text("MARKET CAP"),
+                                      Text(AppLocalizations.of(context)!
+                                          .marketCap),
                                       Text(
                                         _marketData != null
                                             ? _getMarketCap()
@@ -202,7 +204,7 @@ class _BalancePageState extends State<BalancePage> {
                                   ),
                                   Expanded(
                                     child: Column(children: [
-                                      const Text("PRICE"),
+                                      Text(AppLocalizations.of(context)!.price),
                                       Text(
                                           "\$ ${_marketData?.price.toStringAsFixed(2) ?? "0.00"} USD"),
                                     ]),
@@ -254,7 +256,7 @@ class _BalancePageState extends State<BalancePage> {
                           );
                         }
                       },
-                      text: "SEND",
+                      text: AppLocalizations.of(context)!.send,
                       baseColor: CustomColors.qrlLightBlueColor,
                     ),
                   ),
@@ -273,7 +275,7 @@ class _BalancePageState extends State<BalancePage> {
                           );
                         }
                       },
-                      text: "RECEIVE",
+                      text: AppLocalizations.of(context)!.receive,
                       baseColor: CustomColors.qrlLightBlueColor,
                     ),
                   ),
@@ -326,8 +328,10 @@ class _BalancePageState extends State<BalancePage> {
                                       Text(
                                         _extendedWalletData!
                                                 .transactions[index].incoming
-                                            ? "Received"
-                                            : "Sent",
+                                            ? AppLocalizations.of(context)!
+                                                .received
+                                            : AppLocalizations.of(context)!
+                                                .sent,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -339,7 +343,8 @@ class _BalancePageState extends State<BalancePage> {
                                           _extendedWalletData!
                                                   .transactions[index]
                                                   .unconfirmed
-                                              ? "Unconfirmed"
+                                              ? AppLocalizations.of(context)!
+                                                  .unconfirmed
                                               : "",
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -388,7 +393,7 @@ class _BalancePageState extends State<BalancePage> {
                       ),
                     );
                   })
-              : const Text("No transactions found..."),
+              : Text(AppLocalizations.of(context)!.noTransactionsFound),
         )
       ],
     );
@@ -438,8 +443,8 @@ class _BalancePageState extends State<BalancePage> {
       var errorMessage = e.toString();
       log(errorMessage, stackTrace: stacktrace);
       if (mounted) {
-        SnackBars.showSnackBar(
-            context, "Error during balance retrieval: $errorMessage",
+        SnackBars.showSnackBar(context,
+            "${AppLocalizations.of(context)!.errorDuringBalanceRetrieval} $errorMessage",
             duration: const Duration(seconds: 6, milliseconds: 1500));
       }
     }
