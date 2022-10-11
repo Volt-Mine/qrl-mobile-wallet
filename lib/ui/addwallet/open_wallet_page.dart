@@ -20,7 +20,7 @@ class OpenWalletPage extends StatelessWidget {
              Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(AppLocalizations.of(context)!.confirm,
+                child: Text(AppLocalizations.of(context)!.walletSetup,
                     style: const TextStyle(
                       color: CustomColors.qrlLightBlueColor,
                       fontWeight: FontWeight.bold,

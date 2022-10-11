@@ -69,7 +69,7 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
                   Center(
                       child: Padding(
                     padding: const EdgeInsets.only(bottom: 32),
-                    child: Text(AppLocalizations.of(context)!.createWallet),
+                    child: Text(AppLocalizations.of(context)!.createWalletTitle),
                   )),
                   Padding(
                     padding: const EdgeInsets.only(
