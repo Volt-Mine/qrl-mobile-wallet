@@ -78,7 +78,7 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(AppLocalizations.of(context)!.send,
+                        child: Text(AppLocalizations.of(context)!.sendTitle,
                             style: const TextStyle(
                               color: CustomColors.qrlLightBlueColor,
                               fontWeight: FontWeight.bold,

@@ -24,7 +24,7 @@ class ReceiveAmountPage extends StatelessWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(AppLocalizations.of(context)!.receive,
+                child: Text(AppLocalizations.of(context)!.receiveTitle,
                     style: const TextStyle(
                       color: CustomColors.qrlLightBlueColor,
                       fontWeight: FontWeight.bold,
