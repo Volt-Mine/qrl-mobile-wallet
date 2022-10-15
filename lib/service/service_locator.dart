@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobile_wallet/service/address_book_service.dart';
 import 'package:mobile_wallet/service/authentication_service.dart';
 import 'package:mobile_wallet/service/grpc_service.dart';
 import 'package:mobile_wallet/service/market_service.dart';
@@ -30,4 +31,6 @@ setupServiceLocator(SharedPreferences sharedPreferences) {
   getIt.registerLazySingleton<MarketService>(() => MarketService());
   getIt.registerLazySingleton<AuthenticationService>(
       () => AuthenticationService(settingsService));
+  getIt.registerLazySingleton<AddressBookService>(
+      () => AddressBookService(sharedPreferenceService));
 }

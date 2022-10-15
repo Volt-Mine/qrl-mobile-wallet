@@ -1,3 +1,5 @@
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
+# uncomment below line to create a text file containing problems in translation files
+#untranslated-messages-file: untranslated-messages.txt
