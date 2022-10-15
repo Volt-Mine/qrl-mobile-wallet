@@ -18,6 +18,7 @@ import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:mobile_wallet/ui/util/string_util.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SendTransactionPage extends StatefulWidget {
   final Wallet _wallet;
@@ -74,21 +75,21 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Center(
+                    Center(
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Send",
-                            style: TextStyle(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(AppLocalizations.of(context)!.sendTitle,
+                            style: const TextStyle(
                               color: CustomColors.qrlLightBlueColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             )),
                       ),
                     ),
-                    const Center(
+                    Center(
                         child: Padding(
-                      padding: EdgeInsets.only(bottom: 32),
-                      child: Text("Send amount"),
+                      padding: const EdgeInsets.only(bottom: 32),
+                      child: Text(AppLocalizations.of(context)!.sendAmount),
                     )),
                     Center(
                         child: Padding(
@@ -105,7 +106,7 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                       child: QrlTextField(
                         _receiverWalletAddressController,
                         (value) => setState(() {}),
-                        text: "Wallet address",
+                        text: AppLocalizations.of(context)!.walletAddress,
                         focusNode: _focusNode,
                         autoFocus: true,
                         keyboardType: TextInputType.multiline,
@@ -113,7 +114,7 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                         maxLines: 5,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.qr_code),
-                          tooltip: "Scan address",
+                          tooltip: AppLocalizations.of(context)!.scanAddress,
                           color: CustomColors.qrlYellowColor,
                           onPressed: () {
                             if (!_focusNode.hasFocus) {
@@ -130,7 +131,7 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                       child: QrlTextField(
                         _amountController,
                         (value) => setState(() {}),
-                        text: "Amount",
+                        text: AppLocalizations.of(context)!.amount,
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         inputFormatters: <TextInputFormatter>[
@@ -182,8 +183,8 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Text(
-                                  "Fee: ",
+                                Text(
+                                  AppLocalizations.of(context)!.fee,
                                 ),
                                 IntrinsicWidth(
                                   child: TextField(
@@ -262,7 +263,7 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                             ),
                           ),
                           Row(children: [
-                            const Text("OTS Key index:"),
+                            Text(AppLocalizations.of(context)!.otsKeyIndex),
                             Text(" $currentOtsIndex",
                                 style: TextStyle(
                                     color: otsKeysLeft < 16
@@ -272,10 +273,10 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                         ],
                       ),
                     ),
-                    const Center(
+                    Center(
                         child: Padding(
-                      padding: EdgeInsets.only(bottom: 8),
-                      child: Text("Balance"),
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(AppLocalizations.of(context)!.balance),
                     )),
                     Center(
                         child: Padding(
@@ -303,7 +304,7 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                                           Decimal.zero
                                   ? () => onPressedReview(context, otsKeysLeft)
                                   : null,
-                              text: "REVIEW",
+                              text: AppLocalizations.of(context)!.review,
                               baseColor: CustomColors.qrlLightBlueColor,
                             ),
                           ),
@@ -370,11 +371,12 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
     try {
       if (otsKeysLeft < 1) {
         SnackBars.showSnackBar(context,
-            "You have no more OTS keys left... ${StringUtil.formatAmount(widget._extendedWalletData.balance)} QRL is lost forever.....");
+            "${AppLocalizations.of(context)!.noMoreOts1} ${StringUtil.formatAmount(widget._extendedWalletData.balance)} ${AppLocalizations.of(context)!.noMoreOts2}");
         return;
       }
       Wakelock.enable();
-      Dialogs.showLoadingDialog(context, "Verifying transaction...");
+      Dialogs.showLoadingDialog(
+          context, AppLocalizations.of(context)!.verifyingTransaction);
       if (await getIt<WalletService>()
           .isAddressValid(_receiverWalletAddressController.text)) {
         if (mounted) {
@@ -394,8 +396,8 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
               );
           if (otsKeysLeft < 6) {
             Dialogs.showConfirmDialog(context,
-                "You only have $otsKeysLeft OTS keys left.\nIf there are no OTS keys left you cannot make any more transactions and your funds will be lost. \nContinue transaction?",
-                header: "Warning", () {
+                "${AppLocalizations.of(context)!.otsKeysLeft1} $otsKeysLeft ${AppLocalizations.of(context)!.otsKeysLeft2}",
+                header: AppLocalizations.of(context)!.warning, () {
               goToReview();
             });
           } else {
@@ -405,7 +407,8 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
       } else {
         if (mounted) {
           Dialogs.hideLoadingDialog(context);
-          SnackBars.showSnackBar(context, "Address is not valid!");
+          SnackBars.showSnackBar(
+              context, AppLocalizations.of(context)!.addressNotValid);
         }
       }
     } on Exception catch (e, stacktrace) {
@@ -413,8 +416,8 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
       log(errorMessage, stackTrace: stacktrace);
       if (mounted) {
         Dialogs.hideLoadingDialog(context);
-        SnackBars.showSnackBar(
-            context, "Error during send transaction: $errorMessage");
+        SnackBars.showSnackBar(context,
+            "${AppLocalizations.of(context)!.errorSendTransaction} $errorMessage");
       }
     } finally {
       Wakelock.disable();

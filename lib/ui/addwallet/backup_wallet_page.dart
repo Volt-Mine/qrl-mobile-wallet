@@ -8,6 +8,7 @@ import 'package:mobile_wallet/ui/component/qrl_button.dart';
 import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/main_page.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BackupWalletPage extends StatefulWidget {
   final Wallet wallet;
@@ -30,11 +31,11 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Recovery seeds",
-                    style: TextStyle(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(AppLocalizations.of(context)!.recoverySeeds,
+                    style: const TextStyle(
                       color: CustomColors.qrlLightBlueColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -54,12 +55,12 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Expanded(
+                  Expanded(
                       child: Padding(
-                    padding: EdgeInsets.only(left: 32),
-                    child: Text("Mnemonic",
+                    padding: const EdgeInsets.only(left: 32),
+                    child: Text(AppLocalizations.of(context)!.mnemonic,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: CustomColors.qrlYellowColor,
                           fontWeight: FontWeight.bold,
                         )),
@@ -70,7 +71,7 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
                       icon: const Icon(
                         Icons.copy_all,
                       ),
-                      tooltip: "Copy",
+                      tooltip: AppLocalizations.of(context)!.copy,
                       color: CustomColors.qrlYellowColor,
                       onPressed: () {
                         _copy(_mnemonic);
@@ -88,8 +89,8 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
                       _mnemonic,
                       textAlign: TextAlign.center,
                     )
-                  : const Text(
-                      "Loading mnemonic...",
+                  : Text(
+                      AppLocalizations.of(context)!.loadingMnemonic,
                       textAlign: TextAlign.center,
                     ),
             )),
@@ -98,12 +99,12 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Expanded(
+                  Expanded(
                       child: Padding(
-                    padding: EdgeInsets.only(left: 32),
-                    child: Text("Hexseed",
+                    padding: const EdgeInsets.only(left: 32),
+                    child: Text(AppLocalizations.of(context)!.hexseed,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: CustomColors.qrlYellowColor,
                           fontWeight: FontWeight.bold,
                         )),
@@ -114,7 +115,7 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
                       icon: const Icon(
                         Icons.copy_all,
                       ),
-                      tooltip: "Copy",
+                      tooltip: AppLocalizations.of(context)!.copy,
                       color: CustomColors.qrlYellowColor,
                       onPressed: () {
                         _copy(_hexSeed);
@@ -132,20 +133,20 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
                 textAlign: TextAlign.center,
               ),
             )),
-            const Center(
+            Center(
                 child: Padding(
-              padding: EdgeInsets.only(left: 24, right: 24, bottom: 8),
-              child: Text("Warning",
-                  style: TextStyle(
+              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+              child: Text(AppLocalizations.of(context)!.warning,
+                  style: const TextStyle(
                     color: CustomColors.qrlLightBlueColor,
                     fontWeight: FontWeight.bold,
                   )),
             )),
-            const Center(
+            Center(
                 child: Padding(
-              padding: EdgeInsets.only(left: 24, right: 24, bottom: 32),
+              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32),
               child: Text(
-                "This passphrase encrypts the sensitive information that can unlock your wallet file, including your address, hexseed and mnemonic phrase. You will need this passphrase, and wallet file to unlock your wallet file in future.",
+                AppLocalizations.of(context)!.recoveryWarning,
               ),
             )),
             Expanded(
@@ -163,7 +164,7 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
                                 builder: (context) => const MainPage()),
                             (route) => false);
                       },
-                      text: "DONE",
+                      text: AppLocalizations.of(context)!.done,
                       baseColor: CustomColors.qrlLightBlueColor,
                     ),
                   ),
@@ -198,7 +199,8 @@ class _BackupWalletPageState extends State<BackupWalletPage> {
 
   _copy(String copyValue) async {
     Clipboard.setData(ClipboardData(text: copyValue)).then((value) {
-      SnackBars.showSnackBar(context, "Copied to Clipboard");
+      SnackBars.showSnackBar(
+          context, AppLocalizations.of(context)!.copiedToClipboard);
     });
   }
 }

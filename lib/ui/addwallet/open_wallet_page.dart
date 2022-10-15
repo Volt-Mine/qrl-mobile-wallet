@@ -4,6 +4,7 @@ import 'package:mobile_wallet/ui/addwallet/open_wallet_mnemonic_page.dart';
 import 'package:mobile_wallet/ui/component/qrl_app_bar.dart';
 import 'package:mobile_wallet/ui/component/qrl_button.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OpenWalletPage extends StatelessWidget {
   const OpenWalletPage({Key? key}) : super(key: key);
@@ -16,21 +17,21 @@ class OpenWalletPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Center(
+             Center(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Wallet Setup",
-                    style: TextStyle(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(AppLocalizations.of(context)!.walletSetup,
+                    style: const TextStyle(
                       color: CustomColors.qrlLightBlueColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     )),
               ),
             ),
-            const Center(
+             Center(
                 child: Padding(
-              padding: EdgeInsets.only(bottom: 32),
-              child: Text("Open existing wallet"),
+              padding: const EdgeInsets.only(bottom: 32),
+              child: Text(AppLocalizations.of(context)!.openExistingWallet),
             )),
             Center(
               child: Padding(
@@ -46,7 +47,7 @@ class OpenWalletPage extends StatelessWidget {
                                 const OpenWalletMnemonicPage()),
                       );
                     },
-                    text: "Open with mnemonic",
+                    text: AppLocalizations.of(context)!.openWithMnemonics,
                   ),
                 ),
               ),
@@ -65,7 +66,7 @@ class OpenWalletPage extends StatelessWidget {
                                 const OpenWalletHexSeedPage()),
                       );
                     },
-                    text: "Open with hexseed",
+                    text: AppLocalizations.of(context)!.openWithHexseed,
                   ),
                 ),
               ),

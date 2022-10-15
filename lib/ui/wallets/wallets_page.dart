@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_wallet/model/wallet.dart';
 import 'package:mobile_wallet/service/authentication_service.dart';
 import 'package:mobile_wallet/service/service_locator.dart';
@@ -31,11 +32,11 @@ class _WalletsPageState extends State<WalletsPage> {
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.max, children: [
-      const Center(
+      Center(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text("Wallets",
-              style: TextStyle(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(AppLocalizations.of(context)!.wallets,
+              style: const TextStyle(
                 color: CustomColors.qrlLightBlueColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -49,12 +50,12 @@ class _WalletsPageState extends State<WalletsPage> {
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      CircularProgressIndicator(),
-                      SizedBox(
+                    children: [
+                      const CircularProgressIndicator(),
+                      const SizedBox(
                         height: 15,
                       ),
-                      Text("Loading wallets"),
+                      Text(AppLocalizations.of(context)!.loadingWallets),
                     ],
                   ),
                 ),
@@ -120,7 +121,7 @@ class _WalletsPageState extends State<WalletsPage> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.remove_red_eye),
-                          tooltip: "Show keys",
+                          tooltip: AppLocalizations.of(context)!.showKeys,
                           color: CustomColors.qrlYellowColor,
                           onPressed: () {
                             _onPressedShowMnemonic(index);
@@ -128,7 +129,7 @@ class _WalletsPageState extends State<WalletsPage> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete_outline_sharp),
-                          tooltip: "Delete",
+                          tooltip: AppLocalizations.of(context)!.delete,
                           color: CustomColors.qrlYellowColor,
                           onPressed: () {
                             _onPressedDelete(index);
@@ -150,7 +151,7 @@ class _WalletsPageState extends State<WalletsPage> {
                 context,
                 MaterialPageRoute(builder: (context) => const AddWalletPage()),
               ),
-              text: "ADD WALLET",
+              text: AppLocalizations.of(context)!.addWallet,
               baseColor: CustomColors.qrlLightBlueColor,
             ),
           ),
@@ -179,9 +180,10 @@ class _WalletsPageState extends State<WalletsPage> {
 
   void _onPressedDelete(int index) async {
     Dialogs.showConfirmDialog(
-        context, "Are you sure you want to remove this wallet?", () async {
+        context, AppLocalizations.of(context)!.confirmRemoveWallet, () async {
       if (mounted) {
-        Dialogs.showLoadingDialog(context, "Deleting wallet...");
+        Dialogs.showLoadingDialog(
+            context, AppLocalizations.of(context)!.deletingWallet);
       }
       WalletService walletService = getIt<WalletService>();
       await walletService.deleteWallet(index + 1);
@@ -204,7 +206,8 @@ class _WalletsPageState extends State<WalletsPage> {
         );
       }
     } else {
-      SnackBars.showSnackBar(context, "Authentication failed!");
+      SnackBars.showSnackBar(
+          context, AppLocalizations.of(context)!.authenticationFailed);
     }
   }
 

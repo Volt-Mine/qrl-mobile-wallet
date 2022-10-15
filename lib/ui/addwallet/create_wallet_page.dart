@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_wallet/model/wallet.dart';
 import 'package:mobile_wallet/service/service_locator.dart';
 import 'package:mobile_wallet/service/wallet_service.dart';
@@ -54,21 +55,21 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Center(
+                  Center(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Wallet Setup",
-                          style: TextStyle(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(AppLocalizations.of(context)!.walletSetup,
+                          style: const TextStyle(
                             color: CustomColors.qrlLightBlueColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           )),
                     ),
                   ),
-                  const Center(
+                  Center(
                       child: Padding(
-                    padding: EdgeInsets.only(bottom: 32),
-                    child: Text("Create wallet"),
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: Text(AppLocalizations.of(context)!.createWalletTitle),
                   )),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -76,7 +77,7 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
                     child: QrlTextField(
                       _nameController,
                       (value) => setState(() {}),
-                      text: "Wallet name",
+                      text: AppLocalizations.of(context)!.walletName,
                       autoFocus: true,
                     ),
                   ),
@@ -95,7 +96,7 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
                                     color: CustomColors.qrlYellowColor)),
                             contentPadding: const EdgeInsets.only(
                                 left: 12, right: 12, top: 4, bottom: 4),
-                            labelText: 'Tree height',
+                            labelText: AppLocalizations.of(context)!.treeHeight,
                             labelStyle: const TextStyle(
                                 color: CustomColors.qrlYellowColor),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -144,7 +145,8 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
                                     color: CustomColors.qrlYellowColor)),
                             contentPadding: const EdgeInsets.only(
                                 left: 12, right: 12, top: 4, bottom: 4),
-                            labelText: 'Hash function',
+                            labelText:
+                                AppLocalizations.of(context)!.hashFunction,
                             labelStyle: const TextStyle(
                                 color: CustomColors.qrlYellowColor),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -189,7 +191,7 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
                             _nameController.text.isNotEmpty
                                 ? () => _onPressedConfirm()
                                 : null,
-                            text: "CONFIRM",
+                            text: AppLocalizations.of(context)!.confirm,
                             baseColor: CustomColors.qrlLightBlueColor,
                           ),
                         ),
@@ -204,12 +206,12 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
   }
 
   void _onPressedConfirm() async {
-    Dialogs.showConfirmDialog(context,
-        "Once you run out of signatures you will need to create a new wallet. \nBe aware that wallet creation and transaction time increases with tree height. \nContinue wallet creation with current setup?",
-        () async {
+    Dialogs.showConfirmDialog(
+        context, AppLocalizations.of(context)!.outOfSignatures, () async {
       try {
         Wakelock.enable();
-        Dialogs.showLoadingDialog(context, "Creating wallet...");
+        Dialogs.showLoadingDialog(
+            context, AppLocalizations.of(context)!.creatingWallet);
         WalletService walletService = getIt<WalletService>();
         Wallet wallet = await walletService.createWallet(_nameController.text,
             treeHeight: _selectedTreeHeight,
@@ -226,13 +228,13 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
         log(errorMessage, stackTrace: stacktrace);
         if (mounted) {
           Dialogs.hideLoadingDialog(context);
-          SnackBars.showSnackBar(
-              context, "Error during creation of wallet: $errorMessage");
+          SnackBars.showSnackBar(context,
+              "${AppLocalizations.of(context)!.errorWalletCreation} $errorMessage");
         }
       } finally {
         Wakelock.disable();
       }
-    }, header: "Important!");
+    }, header: AppLocalizations.of(context)!.important);
   }
 
   @override
