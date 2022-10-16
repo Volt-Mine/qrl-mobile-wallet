@@ -128,7 +128,7 @@ class _AddressBookPageState extends State<AddressBookPage> {
                                         ),
                                       ),
                                       Text(
-                                        "Q${_addressBook?[index].address}",
+                                        "${_addressBook?[index].address}",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontStyle: FontStyle.italic,
