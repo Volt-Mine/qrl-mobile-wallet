@@ -16,7 +16,7 @@ class QrlTextField extends TextField {
       TextInputType? keyboardType,
       int? minLines,
       int? maxLines,
-      IconButton? suffixIcon,
+      Widget? suffixIcon,
       List<TextInputFormatter>? inputFormatters})
       : super(
             controller: _controller,

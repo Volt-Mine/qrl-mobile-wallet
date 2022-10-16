@@ -3,11 +3,14 @@ import 'dart:developer';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_wallet/model/extended_wallet_data.dart';
 import 'package:mobile_wallet/model/wallet.dart';
+import 'package:mobile_wallet/service/address_book_service.dart';
 import 'package:mobile_wallet/service/service_locator.dart';
 import 'package:mobile_wallet/service/settings_service.dart';
 import 'package:mobile_wallet/service/wallet_service.dart';
+import 'package:mobile_wallet/ui/balance/address_book_page.dart';
 import 'package:mobile_wallet/ui/balance/confirm_transaction_page.dart';
 import 'package:mobile_wallet/ui/component/dialogs.dart';
 import 'package:mobile_wallet/ui/component/qrl_app_bar.dart';
@@ -18,7 +21,6 @@ import 'package:mobile_wallet/ui/component/snack_bars.dart';
 import 'package:mobile_wallet/ui/util/custom_colors.dart';
 import 'package:mobile_wallet/ui/util/string_util.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SendTransactionPage extends StatefulWidget {
   final Wallet _wallet;
@@ -34,10 +36,13 @@ class SendTransactionPage extends StatefulWidget {
 class _SendTransactionPageState extends State<SendTransactionPage> {
   final TextEditingController _receiverWalletAddressController =
       TextEditingController();
+  final TextEditingController _receiverWalletAddressNameController =
+      TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _feeController = TextEditingController();
   int _fee = 1000000;
   final FocusNode _focusNode = FocusNode();
+  bool _isSaveToAddressBook = false;
 
   @override
   void initState() {
@@ -101,8 +106,8 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                       ),
                     )),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          top: 8, bottom: 8, left: 32, right: 32),
+                      padding:
+                          const EdgeInsets.only(top: 8, left: 32, right: 32),
                       child: QrlTextField(
                         _receiverWalletAddressController,
                         (value) => setState(() {}),
@@ -112,22 +117,54 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
                         keyboardType: TextInputType.multiline,
                         minLines: 1,
                         maxLines: 5,
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.qr_code),
-                          tooltip: AppLocalizations.of(context)!.scanAddress,
-                          color: CustomColors.qrlYellowColor,
-                          onPressed: () {
-                            if (!_focusNode.hasFocus) {
-                              _focusNode.requestFocus();
-                            }
-                            _scanAddress();
-                          },
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              icon: const Icon(Icons.account_box),
+                              tooltip:
+                                  AppLocalizations.of(context)!.openAddressBook,
+                              color: CustomColors.qrlYellowColor,
+                              onPressed: () {
+                                if (!_focusNode.hasFocus) {
+                                  _focusNode.requestFocus();
+                                }
+                                _openAddressBook();
+                              },
+                            ),
+                            IconButton(
+                              padding:
+                                  const EdgeInsets.only(left: 8, right: 14),
+                              constraints: const BoxConstraints(),
+                              icon: const Icon(Icons.qr_code),
+                              tooltip:
+                                  AppLocalizations.of(context)!.scanAddress,
+                              color: CustomColors.qrlYellowColor,
+                              onPressed: () {
+                                if (!_focusNode.hasFocus) {
+                                  _focusNode.requestFocus();
+                                }
+                                _scanAddress();
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8, left: 32, right: 32),
+                      padding: const EdgeInsets.only(left: 16, right: 8),
+                      child: SwitchListTile(
+                          activeColor: CustomColors.qrlLightBlueColor,
+                          title: Text(
+                              AppLocalizations.of(context)!.saveToAddressBook),
+                          onChanged: (value) =>
+                              _toggleSaveToAddressBookSwitch(value),
+                          value: _isSaveToAddressBook),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 32, right: 32),
                       child: QrlTextField(
                         _amountController,
                         (value) => setState(() {}),
@@ -379,6 +416,12 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
           context, AppLocalizations.of(context)!.verifyingTransaction);
       if (await getIt<WalletService>()
           .isAddressValid(_receiverWalletAddressController.text)) {
+        if (_isSaveToAddressBook && !await _saveToAddressBook()) {
+          if (mounted) {
+            Dialogs.hideLoadingDialog(context);
+          }
+          return;
+        }
         if (mounted) {
           Dialogs.hideLoadingDialog(context);
           goToReview() => Navigator.push(
@@ -439,6 +482,21 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
     }
   }
 
+  void _openAddressBook() async {
+    String? receiverWalletAddress = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AddressBookPage()),
+    );
+    if (mounted &&
+        receiverWalletAddress != null &&
+        receiverWalletAddress.isNotEmpty) {
+      setState(() {
+        _receiverWalletAddressController.value =
+            TextEditingValue(text: receiverWalletAddress);
+      });
+    }
+  }
+
   int _getOtsKeysForHeight(int height) {
     switch (height) {
       case 8:
@@ -455,9 +513,95 @@ class _SendTransactionPageState extends State<SendTransactionPage> {
     return 0;
   }
 
+  _toggleSaveToAddressBookSwitch(bool value) {
+    if (mounted) {
+      setState(() {
+        _isSaveToAddressBook = value;
+      });
+    }
+  }
+
+  Future<bool> _saveToAddressBook() async {
+    AddressBookService addressBookService = getIt<AddressBookService>();
+    if (await addressBookService
+        .hasAddress(_receiverWalletAddressController.text)) {
+      return true;
+    }
+    return await showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: CustomColors.qrlDarkBlueColor,
+              title: Text(
+                AppLocalizations.of(context)!.addressBook,
+                style: const TextStyle(
+                  color: CustomColors.qrlLightBlueColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              content: Column(mainAxisSize: MainAxisSize.min, children: [
+                Center(
+                    child: Padding(
+                  padding: const EdgeInsets.only(bottom: 32),
+                  child: Text(
+                    _receiverWalletAddressController.text,
+                    textAlign: TextAlign.center,
+                  ),
+                )),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8, bottom: 8, left: 8, right: 8),
+                  child: QrlTextField(
+                    _receiverWalletAddressNameController,
+                    (value) => setState(() {}),
+                    text: AppLocalizations.of(context)!.walletName,
+                    autoFocus: true,
+                  ),
+                ),
+              ]),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [
+                SizedBox(
+                  width: 128,
+                  child: QrlButton(
+                    _receiverWalletAddressNameController.text.isNotEmpty
+                        ? () async {
+                            await addressBookService.addToAddressBook(
+                                _receiverWalletAddressNameController.text,
+                                _receiverWalletAddressController.text);
+                            if (mounted) {
+                              Navigator.of(context).pop(true);
+                            }
+                          }
+                        : null,
+                    text: AppLocalizations.of(context)!.confirm,
+                    baseColor: CustomColors.qrlLightBlueColor,
+                  ),
+                ),
+                SizedBox(
+                  width: 128,
+                  child: QrlButton(
+                    () {
+                      _receiverWalletAddressNameController.clear();
+                      Navigator.of(context).pop(false);
+                    },
+                    text: AppLocalizations.of(context)!.cancel,
+                    baseColor: CustomColors.qrlLightBlueColor,
+                  ),
+                )
+              ],
+            );
+          });
+        });
+  }
+
   @override
   void dispose() {
     _receiverWalletAddressController.dispose();
+    _receiverWalletAddressNameController.dispose();
     _amountController.dispose();
     _feeController.dispose();
     _focusNode.dispose();
