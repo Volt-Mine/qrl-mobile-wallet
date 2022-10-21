@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 enum AppLanguage {
   en("English", Locale.fromSubtags(languageCode: "en")),
   zh("中文", Locale.fromSubtags(languageCode: "zh")),
+  ja("日本", Locale.fromSubtags(languageCode: "ja")),
+  nl("Nederlands", Locale.fromSubtags(languageCode: "nl")),
   ;
 
   final String displayName;
@@ -16,6 +18,10 @@ enum AppLanguage {
         return en;
       case "AppLanguage.zh":
         return zh;
+      case "AppLanguage.ja":
+        return ja;
+      case "AppLanguage.nl":
+        return nl;
     }
     return null;
   }
