@@ -5,7 +5,7 @@ enum AppLanguage {
   zh("中文", Locale.fromSubtags(languageCode: "zh")),
   ja("日本", Locale.fromSubtags(languageCode: "ja")),
   nl("Nederlands", Locale.fromSubtags(languageCode: "nl")),
-  ko("한국인", Locale.fromSubtags(languageCode: "ko")),
+  ko("한국어", Locale.fromSubtags(languageCode: "ko")),
   ;
 
   final String displayName;
